@@ -2,7 +2,8 @@
   "name": "jumpy",
   "version": "1.0.0",
   "scripts": {
-    "start": "grunt"
+    "start": "grunt",
+    "build": "grunt"
   },
   "author": "YOUR NAME HERE",
   "license": "MIT",
