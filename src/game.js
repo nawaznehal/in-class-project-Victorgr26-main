@@ -28,7 +28,8 @@ function preload() {
   this.load.image("ground", "assets/platform1.png");
   this.load.image("star", "assets/star.png");
   this.load.image("bomb", "assets/bomb.png");
-  this.load.spritesheet("dude", "assets/dude.png", {
+  this.load.image('blast', 'path/to/blast.gif');
+  this.load.spritesheet("dude5", "assets/dude.png", {
     frameWidth: 32,
     frameHeight: 48,
   });
@@ -107,7 +108,7 @@ player.setCollideWorldBounds(true);
 this.physics.add.collider(player, platforms); //static platforms collider
 
 //Detect player hitting destructible platforms
-this.physics.add.collider(player, destructiblePlatforms, hitDestructiblePlatform, null, this);
+this.physics.add.overlap(player, destructiblePlatforms, hitDestructiblePlatform, null, this);
 
 this.anims.create({
     key: 'left',
@@ -158,11 +159,24 @@ function hitBomb (player, bomb)
 
 //Fucntion to detect collision from below
 function hitDestructiblePlatform(player, platform) {
-  // Check if the player is moving upwards and colliding with the bottom of the platform
-  if (player.body.touching.bottom) {
-      platform.disableBody(true, true); // Disable the platform when hit from below
+  if (player.body.velocity.y < 0) { // Ensure the player is moving upward
+    // Create a blast effect at the platform's position
+    const blast = player.scene.add.image(platform.x, platform.y, 'blast');
+    blast.setScale(0.5);  // Optional: Adjust the size of the blast
+
+    // Disable the platform
+    platform.disableBody(true, true);
+
+    // Fade out the blast image after 500ms
+    player.scene.tweens.add({
+      targets: blast,
+      alpha: 0,
+      duration: 500,
+      onComplete: () => blast.destroy(), // Destroy the blast after the fade-out
+    });
   }
 }
+
 
 
 }

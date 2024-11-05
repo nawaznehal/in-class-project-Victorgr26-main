@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "grunt",
-    "build": "grunt"
+    "build": "grunt build"
   },
   "author": "YOUR NAME HERE",
   "license": "MIT",
